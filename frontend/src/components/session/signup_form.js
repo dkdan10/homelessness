@@ -1,5 +1,6 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
+import './session.scss'
 
 class SignupForm extends React.Component {
     constructor(props) {
@@ -55,36 +56,47 @@ class SignupForm extends React.Component {
 
     render() {
         return (
-            <div>
+            <div className="session-form-container">
                 <form onSubmit={this.handleSubmit}>
-                    <div>
-                        <input type="text"
-                            value={this.state.email}
-                            onChange={this.update('email')}
-                            placeholder="Email"
-                        />
-                        <br />
-                        <input type="text"
-                            value={this.state.username}
-                            onChange={this.update('username')}
-                            placeholder="Username"
-                        />
-                        <br />
-                        <input type="password"
-                            value={this.state.password}
-                            onChange={this.update('password')}
-                            placeholder="Password"
-                        />
-                        <br />
-                        <input type="password"
-                            value={this.state.password2}
-                            onChange={this.update('password2')}
-                            placeholder="Confirm Password"
-                        />
-                        <br />
-                        <input type="submit" value="Submit" />
-                        {this.renderErrors()}
+                    <h1 className="session-header">Sign Up</h1>
+                    <div className="session-fields">
+                        <div className="session-field">
+                            <label>Email</label>
+                            <input type="text"
+                                value={this.state.email}
+                                onChange={this.update('email')}
+                                placeholder="Email"
+                            />
+                        </div>
+                        <div className="session-field">
+                            <label>Username</label>
+                            <input type="text"
+                                value={this.state.username}
+                                onChange={this.update('username')}
+                                placeholder="Username"
+                            />
+                        </div>
+                        <div className="session-field">
+                            <label>Password</label>
+                            <input type="password"
+                                value={this.state.password}
+                                onChange={this.update('password')}
+                                placeholder="Password"
+                            />
+                        </div>
+                        <div className="session-field">
+                            <label>Confirm Password</label>
+                            <input type="password"
+                                value={this.state.password2}
+                                onChange={this.update('password2')}
+                                placeholder="Confirm Password"
+                            />
+                        </div>
+                        <div className="session-submit">
+                            <input className="session-btn" type="submit" value="Submit" />
+                        </div>
                     </div>
+                    {this.renderErrors()}
                 </form>
             </div>
         );

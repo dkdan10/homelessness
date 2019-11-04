@@ -1,0 +1,70 @@
+.session-form-container {
+    background-color: #fefefe;
+    margin: 0 auto;
+    margin-top: 30px;
+    padding-bottom: 30px;
+    border: 1px solid #888;
+    width: 80%; 
+    max-width: 500px;
+    overflow: hidden;
+    border-radius: 3px;
+    .session-header {
+        text-align: center;
+        font-size: 2em;
+        margin-top: 0.67em;
+        font-weight: bold;
+    }
+    .session-fields {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        .session-field {
+            width: 100%;
+            text-align: center;
+            margin-top: 10px;
+            input[type=text], input[type=password] {
+                width: 90%;
+                padding: 10px;
+                display: inline-block;
+                border: none;
+                background: #FAFAFA;
+                border: 1px solid #f1f1f1;
+                border-radius: 3px;
+                margin-top: 4px;
+            }
+            input[type=text]:focus, input[type=password]:focus {
+                background-color: white;
+                outline: none;
+                border-color: blue;
+            }
+            input[type=text]::placeholder, input[type=password]::placeholder {
+                font-size: 12px;
+            }
+            label {
+                float: left;
+                font-size: 13px;
+                font-weight: 550;
+                padding: 4px;
+                padding-left: 15px;
+            }
+        }
+        .session-submit {
+            width: 100%;
+            text-align: center;
+            .session-btn {
+                background-color: rgb(237, 28, 64);
+                box-sizing: content-box;
+                border-radius: 3px;
+                color: white;
+                padding: 10px;
+                font-size: 16px;
+                font-weight: 600;
+                outline-style: none;
+                width: 90%;
+                margin-top: 10px;
+                cursor: pointer;
+            }
+        }
+    }
+}

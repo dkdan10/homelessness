@@ -1,5 +1,7 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
+import './session.scss'
+
 
 class LoginForm extends React.Component {
     constructor(props) {
@@ -53,24 +55,31 @@ class LoginForm extends React.Component {
 
     render() {
         return (
-            <div>
+            <div className="session-form-container">
                 <form onSubmit={this.handleSubmit}>
-                    <div>
-                        <input type="text"
-                            value={this.state.email}
-                            onChange={this.update('email')}
-                            placeholder="Email"
-                        />
-                        <br />
-                        <input type="password"
-                            value={this.state.password}
-                            onChange={this.update('password')}
-                            placeholder="Password"
-                        />
-                        <br />
-                        <input type="submit" value="Submit" />
-                        {this.renderErrors()}
+                    <h1 className="session-header">Login</h1>
+                    <div className="session-fields">
+                        <div className="session-field">
+                            <label>Email</label>
+                            <input type="text"
+                                value={this.state.email}
+                                onChange={this.update('email')}
+                                placeholder="Email"
+                            />
+                        </div>
+                        <div className="session-field">
+                            <label>Password</label>
+                            <input type="password"
+                                value={this.state.password}
+                                onChange={this.update('password')}
+                                placeholder="Password"
+                            />
+                        </div>
+                        <div className="session-submit">
+                            <input className="session-btn" type="submit" value="Submit" />
+                        </div>
                     </div>
+                    {this.renderErrors()}
                 </form>
             </div>
         );
