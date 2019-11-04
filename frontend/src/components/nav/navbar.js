@@ -1,6 +1,6 @@
 import React from 'react';
-import { Link } from 'react-router-dom'
-import './navbar.css'
+import { Link, withRouter } from 'react-router-dom'
+import './navbar.scss'
 
 class NavBar extends React.Component {
     constructor(props) {
@@ -11,24 +11,28 @@ class NavBar extends React.Component {
 
     logoutUser(e) {
         e.preventDefault();
-        this.props.logout();
+        this.props.logout()
+        this.props.history.push("/login")
     }
 
     getLinks() {
         if (this.props.loggedIn) {
             return (
-                <div className="nav-bar">
-                    <Link to={'/about'}>About</Link>
-                    <Link to={'/connect'}>Connect</Link>
-                    <Link to={'/resources'}>Additional Resources</Link>
-                    <button onClick={this.logoutUser}>Logout</button>
+                <div>
+                    <Link className="nav-link" to={'/about'}>About</Link>
+                    <Link className="nav-link" to={'/connect'}>Connect</Link>
+                    <Link className="nav-link" to={'/resources'}>Additional Resources</Link>
+                    <span className="nav-link" onClick={this.logoutUser}>Logout</span>
                 </div>
             );
         } else {
             return (
-                <div className="nav-bar">
-                    <Link to={'/signup'}>Signup</Link>
-                    <Link to={'/login'}>Login</Link>
+                <div>
+                    <Link className="nav-link" to={'/about'}>About</Link>
+                    <Link className="nav-link" to={'/connect'}>Connect</Link>
+                    <Link className="nav-link" to={'/resources'}>Additional Resources</Link>
+                    <Link className="nav-link" to={'/signup'}>Signup</Link>
+                    <Link className="nav-link" to={'/login'}>Login</Link>
                 </div>
             );
         }
@@ -36,12 +40,12 @@ class NavBar extends React.Component {
 
     render() {
         return (
-            <div>
-                <h1>Home Helper</h1>
+            <div className="nav-bar">
+                <h1 className="logo">Home Helper</h1>
                 {this.getLinks()}
             </div>
         );
     }
 }
 
-export default NavBar;
+export default withRouter(NavBar);

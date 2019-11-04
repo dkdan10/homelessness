@@ -1,0 +1,35 @@
+.nav-bar {
+    height: 9vh;
+    min-height: 80px;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    background: white;
+    align-items: center;
+    border-bottom: 1px solid #888;
+    
+    .logo, .logo:visited {
+        text-decoration: none;  
+        // color: rgb(246, 64, 96);
+        font-size: 40px;   
+        font-family: cursive;
+    }
+
+    .new-group-link:hover {
+        text-decoration: underline;
+    }
+    .nav-link {
+        cursor: pointer;
+        background-color: white;
+        color: rgba(0, 0, 0, 0.54);
+        font-size: 18px;
+        font-weight: 700;
+        padding: 10px;
+        text-decoration: none;
+    }
+    .nav-link:hover {
+        color: red;
+        // cursor: 'pointer';
+    }
+
+}
