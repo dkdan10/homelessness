@@ -3,12 +3,12 @@ import ConnectTabBar from './tabBar/connect_tab_bar'
 
 const DONATE = "Donate"
 const REQUEST = "Request"
-// const TALK = "Talk"
+const TALK = "Talk"
 
 const tabBarOptions = {
     DONATE,
     REQUEST,
-    // TALK
+    TALK
 }
 
 class ConnectComponent extends React.Component {
