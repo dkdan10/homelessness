@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import './request_form.scss'
 
 function RequestForm(props) {
     const [item, setItem] = useState("")
@@ -11,11 +12,11 @@ function RequestForm(props) {
 
     return (
         <div className="request-form-container">
-            <form onSubmit={handleSubmit}>
-                <h1>Make a New Item Request</h1>
+            <form className="request-form" onSubmit={handleSubmit}>
+                <h1 className="request-form-header">Make a New Item Request</h1>
                 <div className="request-form-fields">
-                    <div className="request-input">
-                        <label>Item</label>
+                    <div className="request-input item">
+                        <label>Item: </label>
                         <input  type="text"
                                 value={item}
                                 onChange={(e)=>setItem(e.target.value)}
@@ -23,7 +24,7 @@ function RequestForm(props) {
                         />
                     </div>
                     <div className="request-input">
-                        <label>description</label>
+                        <label>Description: </label>
                         <textarea
                                 value={description}
                                 onChange={(e) => setDescription(e.target.value)}
