@@ -1,0 +1,21 @@
+.connect-tab-bar {
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    .tab-option {
+        background-color: rgb(217, 217, 217);
+        width: 100%;
+        text-align: center;
+        height: 50px;
+        line-height: 50px;
+        font-size: 32px;
+        font-weight: 300;
+
+        border: 0.5px solid black;
+
+        &.selected {
+            background-color: rgb(246, 88, 88);
+            font-weight: 600;
+        }
+    }
+}
