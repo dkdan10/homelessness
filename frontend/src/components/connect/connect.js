@@ -1,5 +1,6 @@
 import React from 'react'
 import ConnectTabBar from './tabBar/connect_tab_bar'
+import RequestForm from './request/request_form'
 
 const DONATE = "Donate"
 const REQUEST = "Request"
@@ -27,12 +28,21 @@ class ConnectComponent extends React.Component {
         }
     }
 
+    loadSelectedComponent() {
+        switch(this.state.currentTab) {
+            case REQUEST:
+                return <RequestForm/>
+            default:
+                return this.state.currentTab
+        }
+    }
+
     render() {
         const { currentTab} = this.state
         return (
             <div className="connect-component-container">
                 <ConnectTabBar currentTab={currentTab} setCurrentTab={this.setCurrentTab} tabBarOptions={Object.values(tabBarOptions)}/>
-                {currentTab}
+                {this.loadSelectedComponent()}
             </div>
         )
     }
