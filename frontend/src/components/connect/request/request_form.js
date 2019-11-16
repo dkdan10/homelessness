@@ -7,7 +7,7 @@ function RequestForm(props) {
 
     function handleSubmit(e) {
         e.preventDefault()
-        console.log("Item: ", item, "Description: ", description)
+        props.createRequest({item, description})
     }
 
     return (

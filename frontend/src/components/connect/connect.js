@@ -1,6 +1,6 @@
 import React from 'react'
 import ConnectTabBar from './tabBar/connect_tab_bar'
-import RequestForm from './request/request_form'
+import RequestForm from './request/request_form_container'
 
 const DONATE = "Donate"
 const REQUEST = "Request"
