@@ -1,6 +1,7 @@
 import React from 'react'
 import ConnectTabBar from './tabBar/connect_tab_bar'
 import RequestForm from './request/request_form_container'
+import Donate from './donate/donate_container'
 
 const DONATE = "Donate"
 const REQUEST = "Request"
@@ -32,6 +33,8 @@ class ConnectComponent extends React.Component {
         switch(this.state.currentTab) {
             case REQUEST:
                 return <RequestForm/>
+            case DONATE:
+                return <Donate/>
             default:
                 return this.state.currentTab
         }

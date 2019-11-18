@@ -18,10 +18,10 @@ module.exports = function (req, res) {
         // console.log("Saved request: ", request)
         res.json({
             request: {
+                _id: request._id,
                 item: request.item,
                 description: request.description,
-                userId: request.userId,
-                _id: request._id
+                userId: request.userId
             }
         })
     })
