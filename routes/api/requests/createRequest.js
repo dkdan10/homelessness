@@ -15,9 +15,14 @@ module.exports = function (req, res) {
     })
 
     newRequest.save().then(request => {
-        console.log("Saved request: ", request)
+        // console.log("Saved request: ", request)
         res.json({
-            request
+            request: {
+                item: request.item,
+                description: request.description,
+                userId: request.userId,
+                _id: request._id
+            }
         })
     })
     .catch(err => console.log("Err saving Request: ", err));
