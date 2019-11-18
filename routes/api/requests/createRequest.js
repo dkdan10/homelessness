@@ -16,6 +16,9 @@ module.exports = function (req, res) {
 
     newRequest.save().then(request => {
         console.log("Saved request: ", request)
+        res.json({
+            request
+        })
     })
     .catch(err => console.log("Err saving Request: ", err));
 }
