@@ -7,6 +7,10 @@ const Request = require('../../../models/Request');
 module.exports = function (req, res) {
     console.log("hit request get all backend")
     Request.find({}, function(err, requests) {
+        if (err) {
+            return res.status(400).json(err)
+        }
+
         const requestsResponse = { requests: {} };
 
         requests.forEach(function (request) {
