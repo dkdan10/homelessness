@@ -1,0 +1,28 @@
+.donate-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .donate-list {
+        width: 75%;
+        .donate-list-item {
+            background-color: beige;
+            text-align: center;
+            margin-top: 10px;
+            // margin-bottom: 10px;
+            padding-top: 6px;
+            padding-bottom: 6px;
+            border-radius: 6px;
+            border: 1px solid black;
+            .donate-item {
+                font-size: 32px;
+                margin-bottom: 6px;
+            }
+            .donate-description {
+                
+            }
+            .donate-user {
+
+            }
+        }
+    }
+}
