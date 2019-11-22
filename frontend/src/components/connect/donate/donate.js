@@ -11,7 +11,7 @@ function Donate(props) {
         getAllRequests();
     }, [getAllRequests])
 
-    const requestLis = createRequestLis(requests, props.history)
+    const requestLis = createRequestLis(requests, props.chatWithUser)
     
     return (
         <div className="donate-container">
@@ -22,26 +22,17 @@ function Donate(props) {
     )
 }
 
-function createRequestLis(requests, history) {
+function createRequestLis(requests, chatWithUser) {
     return requests.map(request => {
         return(
             <li className="donate-list-item" key={request._id}>
                 <h1 className="donate-item">Item: {request.item}</h1>
                 <h1 className="donate-description">Description: {request.description}</h1>
                 <h1 className="donate-user">UserId: {request.userId}</h1>
-                <button onClick={handleStartConvo(history)(request.userId)} className="convo-btn">Start a Convo</button>
+                <button onClick={chatWithUser(request.userId)} className="convo-btn">Start a Convo</button>
             </li>
         )
     })
-}
-
-function handleStartConvo(history) {
-    return userId => {
-        return e => {
-            e.preventDefault()
-            history.push(`/connect/chats/${userId}`)
-        }
-    }
 }
 
 export default withRouter(Donate)

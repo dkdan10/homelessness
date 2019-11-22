@@ -1,9 +1,9 @@
 import React from 'react'
-import { withRouter } from 'react-router-dom'
 
 import ConnectTabBar from './tabBar/connect_tab_bar'
 import RequestForm from './request/request_form_container'
 import Donate from './donate/donate_container'
+import Talk from './talk/talk_container'
 
 const DONATE = "Donate"
 const REQUEST = "Request"
@@ -19,30 +19,25 @@ class ConnectComponent extends React.Component {
     constructor(props) {
         super(props)
         let currentTab = DONATE
-        // debugger
-        if (this.props.match.params.chatUserId) {
-            currentTab = TALK
-        }
         this.state = {
-            currentTab
+            currentTab,
+            chatUserId: null
         }
         this.setCurrentTab = this.setCurrentTab.bind(this)
+        this.chatWithUser = this.chatWithUser.bind(this)
     }
 
     setCurrentTab(option) {
         return e => {
             e.preventDefault()
-            if (option !== TALK) {
-                this.props.history.push("/connect")
-            }
             this.setState({currentTab: option})
         }
     }
 
-    componentDidUpdate(prevProps) {
-        if (this.props.match.params.chatUserId 
-            && this.props.match.params.chatUserId !== prevProps.match.params.chatUserId) {
-                this.setState({ currentTab: TALK })
+    chatWithUser(userId) {
+        return e => {
+            e.preventDefault()
+            this.setState({currentTab: TALK, chatUserId: userId})
         }
     }
 
@@ -51,9 +46,9 @@ class ConnectComponent extends React.Component {
             case REQUEST:
                 return <RequestForm/>
             case DONATE:
-                return <Donate/>
+                return <Donate chatWithUser={this.chatWithUser}/>
             case TALK:
-                return `Talking with ${this.props.match.params.chatUserId}`
+                return <Talk chatUserId={this.state.chatUserId} setChatUserId={this.chatWithUser}/>
             default:
                 return this.state.currentTab
         }
