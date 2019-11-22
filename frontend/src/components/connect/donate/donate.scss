@@ -23,6 +23,15 @@
             .donate-user {
 
             }
+            .convo-btn {
+                box-shadow: inset -3px -3px 10px rgb(246, 64, 96);
+                background-color: rgb(246, 88, 88); /* Fill color */
+                color: black; /* Text color */
+                border-radius: 15px; /* Rounded button edges */
+                font-style: italic; /* Italicize text */
+                padding: 10px 30px; /* Distance between text and border */
+                margin-top: 6px;
+            }
         }
     }
 }
