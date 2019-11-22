@@ -46,9 +46,14 @@ class ConnectComponent extends React.Component {
             case REQUEST:
                 return <RequestForm/>
             case DONATE:
-                return <Donate chatWithUser={this.chatWithUser}/>
+                return <Donate 
+                            chatWithUser={this.chatWithUser}
+                        />
             case TALK:
-                return <Talk chatUserId={this.state.chatUserId} setChatUserId={this.chatWithUser}/>
+                return <Talk 
+                            chatUserId={this.state.chatUserId} 
+                            setChatUserId={this.chatWithUser}
+                        />
             default:
                 return this.state.currentTab
         }

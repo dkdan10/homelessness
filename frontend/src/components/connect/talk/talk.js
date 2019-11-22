@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { withRouter } from 'react-router-dom'
 import './talk.scss'
 
 function Talk(props) {
     // const { chatUserId } = props
     const { chatUserId, setChatUserId } = props
-
 
     return (
         <div className="tak-container">

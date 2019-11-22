@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { withRouter } from 'react-router-dom'
 import './donate.scss'
 
@@ -24,7 +24,7 @@ function Donate(props) {
 
 function createRequestLis(requests, chatWithUser) {
     return requests.map(request => {
-        return(
+        return (
             <li className="donate-list-item" key={request._id}>
                 <h1 className="donate-item">Item: {request.item}</h1>
                 <h1 className="donate-description">Description: {request.description}</h1>
