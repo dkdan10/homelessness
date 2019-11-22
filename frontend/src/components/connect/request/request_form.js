@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { withRouter } from 'react-router-dom'
 import './request_form.scss'
 
 function RequestForm(props) {
@@ -7,7 +8,11 @@ function RequestForm(props) {
 
     function handleSubmit(e) {
         e.preventDefault()
-        props.createRequest({item, description})
+        if (props.loggedIn) {
+            props.createRequest({item, description})
+        } else {
+            props.history.push("/login")
+        }
     }
 
     return (
@@ -41,4 +46,4 @@ function RequestForm(props) {
     )
 }
 
-export default RequestForm
+export default withRouter(RequestForm)

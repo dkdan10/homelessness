@@ -8,7 +8,7 @@ function Donate(props) {
     // Maybe import this from the overlayying container. 
     useEffect(() => {
         getAllRequests();
-    }, ["MOUNT"])
+    }, [getAllRequests])
 
     const requestLis = createRequestLis(requests)
     
