@@ -10,6 +10,10 @@ function RequestForm(props) {
         e.preventDefault()
         if (props.loggedIn) {
             props.createRequest({item, description})
+            .then(() => {
+                setItem("")
+                setDescription("")
+            })
         } else {
             props.history.push("/login")
         }
@@ -33,7 +37,7 @@ function RequestForm(props) {
                         <textarea
                                 value={description}
                                 onChange={(e) => setDescription(e.target.value)}
-                                placeholder="Why do you need this item"
+                                placeholder="Details about this Item / Why do you need this item?"
                         />
                     </div>
                     <div className="request-submit">
