@@ -47,6 +47,7 @@ io = socket(server);
 
 io.on('connection', (socket) => {
     console.log(socket.id);
+    // add connected ids to hash table. 
 
     socket.on('SEND_MESSAGE', function (data) {
         console.log(data)
