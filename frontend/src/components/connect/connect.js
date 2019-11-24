@@ -5,6 +5,8 @@ import RequestForm from './request/request_form_container'
 import Donate from './donate/donate_container'
 import Talk from './talk/talk_container'
 
+import io from "socket.io-client"
+
 const DONATE = "Donate"
 const REQUEST = "Request"
 const TALK = "Talk"
@@ -21,7 +23,8 @@ class ConnectComponent extends React.Component {
         let currentTab = DONATE
         this.state = {
             currentTab,
-            chatUserId: null
+            chatUserId: null,
+            socket: io("localhost:5000")
         }
         this.setCurrentTab = this.setCurrentTab.bind(this)
         this.chatWithUser = this.chatWithUser.bind(this)
