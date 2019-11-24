@@ -24,7 +24,7 @@ class ConnectComponent extends React.Component {
         this.state = {
             currentTab,
             chatUserId: null,
-            socket: io("localhost:5000")
+            socket: io("localhost:5000"),
         }
         this.setCurrentTab = this.setCurrentTab.bind(this)
         this.chatWithUser = this.chatWithUser.bind(this)
@@ -56,12 +56,14 @@ class ConnectComponent extends React.Component {
                 return <Talk 
                             chatUserId={this.state.chatUserId} 
                             setChatUserId={this.chatWithUser}
+                            socket={this.state.socket}
                         />
             default:
                 return this.state.currentTab
         }
     }
 
+    
     render() {
         const { currentTab} = this.state
         return (

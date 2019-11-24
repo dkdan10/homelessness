@@ -47,4 +47,18 @@ io = socket(server);
 
 io.on('connection', (socket) => {
     console.log(socket.id);
+
+    socket.on('SEND_MESSAGE', function (data) {
+        console.log(data)
+        // io.emit('RECEIVE_MESSAGE', data);
+    })
+    /*
+    // SET UP CHAT SOCKETS;
+    chatSockets(socket)
+    socketData = {
+        senderId: id,
+        recepientId: id,
+        messageContent: string
+    }
+    */
 });
