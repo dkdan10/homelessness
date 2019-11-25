@@ -5,7 +5,7 @@ import NavBarContainer from './nav/navbar_container';
 
 import LoginFormContainer from './session/login_form_container';
 import SignupFormContainer from './session/signup_form_container';
-import ConnectComponent from './connect/connect';
+import ConnectComponent from './connect/connect_container';
 
 const App = () => (
     <div>

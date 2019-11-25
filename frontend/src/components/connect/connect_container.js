@@ -1,10 +1,10 @@
 import { connect } from 'react-redux';
 
-import Talk from './talk.js';
+import Connect from './connect.js';
 
 const mapStateToProps = state => ({
     loggedIn: state.session.isAuthenticated,
-
+    currentUser: state.session.user
 });
 
 // const mapDispatchToProps = dispatch => ({
@@ -14,4 +14,4 @@ const mapStateToProps = state => ({
 export default connect(
     mapStateToProps,
     // mapDispatchToProps
-)(Talk);
+)(Connect);

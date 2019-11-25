@@ -3,7 +3,7 @@ import React from 'react'
 import ConnectTabBar from './tabBar/connect_tab_bar'
 import RequestForm from './request/request_form_container'
 import Donate from './donate/donate_container'
-import Talk from './talk/talk_container'
+import Talk from './talk/talk'
 
 import io from "socket.io-client"
 
@@ -24,10 +24,29 @@ class ConnectComponent extends React.Component {
         this.state = {
             currentTab,
             chatUserId: null,
-            socket: io("localhost:5000"),
-        }
+            socket: this.createSocketConnection()
+        }        
+
         this.setCurrentTab = this.setCurrentTab.bind(this)
         this.chatWithUser = this.chatWithUser.bind(this)
+    }
+
+    createSocketConnection() {
+        // Put logic here for prod vs dev
+        const socket = io("localhost:5000")
+        socket.on('connect', () => {
+            if (this.props.loggedIn) {
+                socket.emit("ASSIGN_USER_TO_SOCKET", {
+                    userId: this.props.currentUser.id,
+                    socketId: socket.id
+                })
+            }
+        })
+        return socket
+    }
+
+    componentWillUnmount () {
+        this.state.socket.disconnect()
     }
 
     setCurrentTab(option) {
@@ -57,6 +76,8 @@ class ConnectComponent extends React.Component {
                             chatUserId={this.state.chatUserId} 
                             setChatUserId={this.chatWithUser}
                             socket={this.state.socket}
+                            currentUser={this.props.currentUser}
+                            chats={this.state.chats}
                         />
             default:
                 return this.state.currentTab

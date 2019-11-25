@@ -13,14 +13,11 @@ if (process.env.NODE_ENV === 'production') {
     })
 }
 
-// SETUP API ROUTE HANDLING
+// IMPORT API ROUTE HANDLING
 const users = require("./routes/api/users");
 const requests = require("./routes/api/requests")
 
-app.use("/api/users", users);
-app.use("/api/requests", requests)
-
-// SETUP PASSPORT FOR AUTH AND BODY PARSER
+// SETUP PASSPORT FOR AUTH, BODY PARSER, AND ROUTES
 const passport = require('passport');
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -28,6 +25,9 @@ app.use(bodyParser.json());
 
 app.use(passport.initialize());
 require('./config/passport')(passport);
+
+app.use("/api/users", users);
+app.use("/api/requests", requests)
 
 // CONNECT TO MONGO DB
 mongoose
@@ -42,24 +42,41 @@ const port = process.env.PORT || 5000;
 const server = app.listen(port, () => console.log(`Server is running on port ${port}`));
 
 // SETUP WEBSOCKETS
-const socket = require('socket.io');
-io = socket(server);
+const socket = require('socket.io')
+const io = socket(server)
+
+const socketLookup = {}
+const userIdToSocketId = {}
+const socketIdToUserId = {}
 
 io.on('connection', (socket) => {
     console.log(socket.id);
-    // add connected ids to hash table. 
+    socketLookup[socket.id] = socket 
+    socketIdToUserId[socket.id] = null
+    
+    socket.on('ASSIGN_USER_TO_SOCKET', function(data) {
+        console.log("connect assign")
+        userIdToSocketId[data.userId] = data.socketId
+        socketIdToUserId[data.socketId] = data.userId
+        // console.log(data)
+        // console.log(userIdToSocketId)
+    })
+
+    socket.on('disconnect', function () {
+        console.log("disconnect")
+        delete userIdToSocketId[socketIdToUserId[socket.id]]
+        delete socketIdToUserId[socket.id]
+        delete socketLookup[socket.id]
+        // console.log(userIdToSocketId)
+    })
 
     socket.on('SEND_MESSAGE', function (data) {
-        console.log(data)
-        // io.emit('RECEIVE_MESSAGE', data);
+        if (userIdToSocketId[data.recipientUserId]) {
+            const socketId = userIdToSocketId[data.recipientUserId]
+            socketLookup[socketId].emit('RECEIVE_MESSAGE', data)
+        }
+        // if (userIdToSocketId[data.senderId]) {
+        //     userIdToSocketId[data.senderId].emit('RECEIVE_MESSAGE', data)
+        // }
     })
-    /*
-    // SET UP CHAT SOCKETS;
-    chatSockets(socket)
-    socketData = {
-        senderId: id,
-        recepientId: id,
-        messageContent: string
-    }
-    */
 });
