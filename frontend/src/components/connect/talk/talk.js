@@ -21,6 +21,9 @@ function Talk(props) {
 
     useEffect(() => {
         subscribeToSocketConnections(socket, setMessages)
+        return function cleanup () {
+            unsubscribeToSocketConnections(socket)
+        }
     }, [socket])
 
     return (
@@ -51,6 +54,10 @@ function subscribeToSocketConnections(socket, setMessages) {
     socket.on('RECEIVE_MESSAGE', (messageData) => {
         setMessages((prevMessages) => [...prevMessages, messageData.message])
     })
+}
+
+function unsubscribeToSocketConnections(socket) {
+    socket.removeListener('RECEIVE_MESSAGE')
 }
 
 export default withRouter(Talk)
