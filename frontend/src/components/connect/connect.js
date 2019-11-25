@@ -37,7 +37,7 @@ class ConnectComponent extends React.Component {
 
     createSocketConnection() {
         // Put logic here for prod vs dev
-        const socket = io("localhost:5000")
+        const socket = io('localhost:5000')
         socket.on('connect', () => {
             if (this.props.loggedIn) {
                 socket.emit("ASSIGN_USER_TO_SOCKET", {
@@ -66,6 +66,7 @@ class ConnectComponent extends React.Component {
             this.props.createConversation({
                 participants: [this.props.currentUser.id, userId]
             }).then(() => {
+                // Broadcast conversation either here or on first message
                 this.setState({currentTab: TALK, chatUserId: userId})
             })
         }
