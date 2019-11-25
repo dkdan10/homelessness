@@ -10,13 +10,13 @@ function Talk(props) {
 
 
     function handleSendMessage(e) {
-        e.preventDefault();
+        e.preventDefault()
         socket.emit('SEND_MESSAGE', {
             message: messageText,
             recipientUserId: chatUserId,
             senderId: currentUser.id
-        });
-        setMessageText('');
+        })
+        setMessageText('')
     }
 
     useEffect(() => {

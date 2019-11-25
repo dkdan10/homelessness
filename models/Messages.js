@@ -1,16 +1,16 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const RequestsSchema = new Schema({
-    item: {
+const MessageSchema = new Schema({
+    senderId: {
         type: String,
         required: true
     },
-    description: {
+    message: {
         type: String,
         required: true
     },
-    userId: {
+    conversaionId: {
         type: String,
         required: true
     },
@@ -20,4 +20,4 @@ const RequestsSchema = new Schema({
     }
 })
 
-module.exports = Request = mongoose.model('requests', RequestsSchema);
+module.exports = Message = mongoose.model('message', MessageSchema);

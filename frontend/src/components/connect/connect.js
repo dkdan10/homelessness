@@ -31,6 +31,10 @@ class ConnectComponent extends React.Component {
         this.chatWithUser = this.chatWithUser.bind(this)
     }
 
+    componentDidMount() {
+        this.props.getConversations()
+    }
+
     createSocketConnection() {
         // Put logic here for prod vs dev
         const socket = io("localhost:5000")
@@ -59,7 +63,11 @@ class ConnectComponent extends React.Component {
     chatWithUser(userId) {
         return e => {
             e.preventDefault()
-            this.setState({currentTab: TALK, chatUserId: userId})
+            this.props.createConversation({
+                participants: [this.props.currentUser.id, userId]
+            }).then(() => {
+                this.setState({currentTab: TALK, chatUserId: userId})
+            })
         }
     }
 
