@@ -5,12 +5,14 @@ export const RECEIVE_CONVERSATIONS = "RECEIVE_CONVERSATIONS"
 
 const receiveConversation = (data) => ({
     type: RECEIVE_CONVERSATION,
-    conversation: data.conversation
+    conversation: data.conversation,
+    conversationUsers: data.users
 })
 
 const receiveConversations = (data) => ({
     type: RECEIVE_CONVERSATIONS,
-    conversations: data.conversations
+    conversations: data.conversations,
+    conversationUsers: data.users
 })
 
 export const createConversation = conversationData => dispatch => (

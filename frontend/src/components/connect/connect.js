@@ -28,7 +28,8 @@ class ConnectComponent extends React.Component {
         }        
 
         this.setCurrentTab = this.setCurrentTab.bind(this)
-        this.chatWithUser = this.chatWithUser.bind(this)
+        this.setChatWithUser = this.setChatWithUser.bind(this)
+        this.newChatWithUser = this.newChatWithUser.bind(this)
     }
 
     componentDidMount() {
@@ -60,15 +61,22 @@ class ConnectComponent extends React.Component {
         }
     }
 
-    chatWithUser(userId) {
+    newChatWithUser(userId) {
         return e => {
             e.preventDefault()
             this.props.createConversation({
                 participants: [this.props.currentUser.id, userId]
             }).then(() => {
                 // Broadcast conversation either here or on first message
-                this.setState({currentTab: TALK, chatUserId: userId})
+                this.setState({ currentTab: TALK, chatUserId: userId })
             })
+        }
+    }
+
+    setChatWithUser(userId) {
+        return e => {
+            e.preventDefault()
+            this.setState({ currentTab: TALK, chatUserId: userId })
         }
     }
 
@@ -78,15 +86,15 @@ class ConnectComponent extends React.Component {
                 return <RequestForm/>
             case DONATE:
                 return <Donate 
-                            chatWithUser={this.chatWithUser}
+                            newChatWithUser={this.newChatWithUser}
                         />
             case TALK:
                 return <Talk 
                             chatUserId={this.state.chatUserId} 
-                            setChatUserId={this.chatWithUser}
+                            setChatUserId={this.setChatWithUser}
                             socket={this.state.socket}
                             currentUser={this.props.currentUser}
-                            chats={this.state.chats}
+                            userConversations={this.props.userConversations}
                         />
             default:
                 return this.state.currentTab

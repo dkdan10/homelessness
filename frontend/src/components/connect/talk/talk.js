@@ -4,7 +4,7 @@ import './talk.scss'
 
 // To save text from diffrent chats I could pass down a typed messages object from the connect component. Or create that here. 
 function Talk(props) {
-    const { chatUserId, setChatUserId, socket, currentUser } = props
+    const { chatUserId, setChatUserId, socket, currentUser, userConversations } = props
     const [ messageText, setMessageText ] = useState('')
     const [ messages, setMessages ] = useState([])
 
@@ -19,6 +19,21 @@ function Talk(props) {
         setMessageText('')
     }
 
+    function formConversationLis() {
+        return Object.keys(userConversations).map(otherChatUserId => {
+            return (
+                <li key={`chat-with-${otherChatUserId}`}>
+                    <div onClick={setChatUserId(otherChatUserId)}>
+                        Chat User Id: {otherChatUserId}
+                    </div>
+                    <div>
+                        Chat Username: {userConversations[otherChatUserId].username}
+                    </div>
+                </li>
+            )
+        })
+    }
+
     useEffect(() => {
         subscribeToSocketConnections(socket, setMessages)
         return function cleanup () {
@@ -29,20 +44,8 @@ function Talk(props) {
     return (
         <div className="talk-container">
             <span>Chat With: {chatUserId}</span>
-            <div onClick={setChatUserId("DANIEL")}>SET CHAT WITH DANIEL</div>
-            <div onClick={setChatUserId("ALEX")}>SET CHAT WITH ALEX</div>
-            <div onClick={setChatUserId("ANNA")}>SET CHAT WITH ANNA</div>
-            <div onClick={setChatUserId("SPENCE")}>SET CHAT WITH SPENCE</div>
             <ul>
-                {
-                    messages.map((message, idx) => {
-                        return (
-                            <li key={`message-idx-${idx}`}>
-                                Message: {message}
-                            </li>
-                        )
-                    })
-                }
+                {formConversationLis()}
             </ul>
             <input type="text" onChange={(e) => setMessageText(e.target.value)} value={messageText}></input>
             <button onClick={handleSendMessage}>Send</button>

@@ -11,7 +11,7 @@ function Donate(props) {
         getAllRequests();
     }, [getAllRequests])
 
-    const requestLis = createRequestLis(requests, props.chatWithUser)
+    const requestLis = createRequestLis(requests, props.newChatWithUser)
     
     return (
         <div className="donate-container">
@@ -22,14 +22,14 @@ function Donate(props) {
     )
 }
 
-function createRequestLis(requests, chatWithUser) {
+function createRequestLis(requests, newChatWithUser) {
     return requests.map(request => {
         return (
             <li className="donate-list-item" key={request._id}>
                 <h1 className="donate-item">Item: {request.item}</h1>
                 <h1 className="donate-description">Description: {request.description}</h1>
                 <h1 className="donate-user">UserId: {request.userId}</h1>
-                <button onClick={chatWithUser(request.userId)} className="convo-btn">Start a Convo</button>
+                <button onClick={newChatWithUser(request.userId)} className="convo-btn">Start a Convo</button>
             </li>
         )
     })
