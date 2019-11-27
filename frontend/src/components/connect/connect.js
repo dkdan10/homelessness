@@ -37,7 +37,7 @@ class ConnectComponent extends React.Component {
     }
 
     componentDidMount() {
-        this.props.getConversations()
+        if (this.props.loggedIn) this.props.getConversations()
     }
 
     componentDidUpdate(prevProps) {
@@ -80,15 +80,18 @@ class ConnectComponent extends React.Component {
             participants: [this.props.currentUser.id, userId]
         }).then(() => {
             // Broadcast conversation either here or on first message
-            this.setState({ currentTab: TALK, currentConversationId: this.props.userConversations[this.props.userToConversationId[userId]].conversationId })
+            debugger
+            this.setState({ currentTab: TALK, currentConversationId: this.props.userConversations[this.props.userIdToConversationId[userId]].conversationId })
         })
     }
 
     setChatWithUser(userId) {
         return e => {
             e.preventDefault()
-            if (this.props.userToConversationId[userId]) {
-                this.setState({ currentTab: TALK, currentConversationId: this.props.userConversations[this.props.userToConversationId[userId]].conversationId })
+            if (!this.props.loggedIn) {
+                this.props.history.push('/login')
+            } else if (this.props.userIdToConversationId[userId]) {
+                this.setState({ currentTab: TALK, currentConversationId: this.props.userConversations[this.props.userIdToConversationId[userId]].conversationId })
             } else {
                 this.newChatWithUser(userId)
             }

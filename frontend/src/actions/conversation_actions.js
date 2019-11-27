@@ -3,29 +3,31 @@ import * as APIUtil from "../util/conversation_api_util"
 export const RECEIVE_CONVERSATION = "RECEIVE_CONVERSATION"
 export const RECEIVE_CONVERSATIONS = "RECEIVE_CONVERSATIONS"
 
-const receiveConversation = (data) => ({
+const receiveConversation = (data, user) => ({
     type: RECEIVE_CONVERSATION,
     conversation: data.conversation,
-    conversationUsers: data.users
+    conversationUsers: data.users,
+    currentUser: user
 })
 
-const receiveConversations = (data) => ({
+const receiveConversations = (data, user) => ({
     type: RECEIVE_CONVERSATIONS,
     conversations: data.conversations,
-    conversationUsers: data.users
+    conversationUsers: data.users,
+    currentUser: user
 })
 
-export const createConversation = conversationData => dispatch => (
+export const createConversation = conversationData => (dispatch, getState) => (
     APIUtil.createConversation(conversationData).then(res => (
-        dispatch(receiveConversation(res.data))
+        dispatch(receiveConversation(res.data, getState().session.user))
     ), err => (
         console.log("dispatch post request errors here: ", err)
     ))
 )
 
-export const getAllConversations = () => dispatch => (
+export const getAllConversations = () => (dispatch, getState) => (
     APIUtil.getAllConversations().then(res => (
-        dispatch(receiveConversations(res.data))
+        dispatch(receiveConversations(res.data, getState().session.user))
     ), err => (
         console.log("dispatch post request errors here: ", err)
     ))
