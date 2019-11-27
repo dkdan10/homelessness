@@ -21,19 +21,33 @@ class ConnectComponent extends React.Component {
     constructor(props) {
         super(props)
         let currentTab = DONATE
+
+        const conversationMessages = {}
+        Object.keys(this.props.userConversations).forEach(conversationId => conversationMessages[conversationId] = [])
         this.state = {
             currentTab,
-            chatUserId: null,
-            socket: this.createSocketConnection()
+            currentConversationId: null,
+            socket: this.createSocketConnection(),
+            conversationMessages
         }        
 
         this.setCurrentTab = this.setCurrentTab.bind(this)
         this.setChatWithUser = this.setChatWithUser.bind(this)
-        this.newChatWithUser = this.newChatWithUser.bind(this)
+        this.addMessageToConversation = this.addMessageToConversation.bind(this)
     }
 
     componentDidMount() {
         this.props.getConversations()
+    }
+
+    componentDidUpdate(prevProps) {
+        if (Object.keys(this.props.userConversations).length !== Object.keys(prevProps.userConversations).length) {
+            const conversationMessages = {}
+            Object.keys(this.props.userConversations).forEach(conversationId => conversationMessages[conversationId] = [])
+            this.setState({
+                conversationMessages
+            })
+        }
     }
 
     createSocketConnection() {
@@ -62,22 +76,29 @@ class ConnectComponent extends React.Component {
     }
 
     newChatWithUser(userId) {
-        return e => {
-            e.preventDefault()
-            this.props.createConversation({
-                participants: [this.props.currentUser.id, userId]
-            }).then(() => {
-                // Broadcast conversation either here or on first message
-                this.setState({ currentTab: TALK, chatUserId: userId })
-            })
-        }
+        this.props.createConversation({
+            participants: [this.props.currentUser.id, userId]
+        }).then(() => {
+            // Broadcast conversation either here or on first message
+            this.setState({ currentTab: TALK, currentConversationId: this.props.userConversations[this.props.userToConversationId[userId]].conversationId })
+        })
     }
 
     setChatWithUser(userId) {
         return e => {
             e.preventDefault()
-            this.setState({ currentTab: TALK, chatUserId: userId })
+            if (this.props.userToConversationId[userId]) {
+                this.setState({ currentTab: TALK, currentConversationId: this.props.userConversations[this.props.userToConversationId[userId]].conversationId })
+            } else {
+                this.newChatWithUser(userId)
+            }
         }
+    }
+
+    addMessageToConversation(message, conversationId) {
+        this.setState({
+            conversationMessages: Object.assign(this.state.conversationMessages, { [conversationId]: this.state.conversationMessages[conversationId].concat([message])}) 
+        })
     }
 
     loadSelectedComponent() {
@@ -86,15 +107,17 @@ class ConnectComponent extends React.Component {
                 return <RequestForm/>
             case DONATE:
                 return <Donate 
-                            newChatWithUser={this.newChatWithUser}
+                            setChatWithUser={this.setChatWithUser}
                         />
             case TALK:
                 return <Talk 
-                            chatUserId={this.state.chatUserId} 
+                            currentConversationId={this.state.currentConversationId} 
                             setChatUserId={this.setChatWithUser}
                             socket={this.state.socket}
                             currentUser={this.props.currentUser}
                             userConversations={this.props.userConversations}
+                            conversationMessages={this.state.conversationMessages}
+                            addMessageToConversation={this.addMessageToConversation}
                         />
             default:
                 return this.state.currentTab

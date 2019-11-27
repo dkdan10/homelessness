@@ -1,20 +1,28 @@
-export const formUserConversationsObject = (currentUser, conversations, users) => {
-    let userConversationsObject = {}
+export const formConversationsObject = (currentUser, conversations, users) => {
+    const conversationsObject = {}
+    const userToConversationId = {}
     Object.values(conversations).forEach(conversation => {
         const nonCurrentUserIds = conversation.participants.filter(userId => userId !== currentUser.id)
         if (nonCurrentUserIds.length) {
-            userConversationsObject[nonCurrentUserIds[0]] = {
+            conversationsObject[conversation._id] = {
                 conversationId: conversation._id,
                 otherUserId: nonCurrentUserIds[0],
-                username: users[nonCurrentUserIds[0]].username
+                username: users[nonCurrentUserIds[0]].username,
+                // messages: []
             }
+            userToConversationId[nonCurrentUserIds[0]] = conversation._id
         } else {
-            userConversationsObject[currentUser.id] = {
+            conversationsObject[conversation._id] = {
                 conversationId: conversation._id,
                 otherUserId: currentUser.id,
-                username: users[currentUser.id].username
+                username: users[currentUser.id].username,
+                // messages: []
             }
+            userToConversationId[currentUser.id] = conversation._id
         }
     })
-    return userConversationsObject
+    return {
+        userConversations: conversationsObject,
+        userToConversationId: userToConversationId
+    }
 }
