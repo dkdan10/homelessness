@@ -51,6 +51,9 @@ class ConnectComponent extends React.Component {
         socket.on('RECIEVE_CONVERSATION', conversationData => {
             this.props.receiveConversation(conversationData, this.props.currentUser)
         })
+        socket.on('RECEIVE_MESSAGE', (messageData) => {
+            this.props.receiveMessage(messageData)
+        })
         return socket
     }
 
@@ -110,7 +113,6 @@ class ConnectComponent extends React.Component {
                             setChatUserId={this.setChatWithUser}
                             userConversations={this.props.userConversations}
                             createMessage={this.props.createMessage}
-                            receiveMessage={this.props.receiveMessage}
                             users={this.props.users}
                         />
             default:

@@ -9,7 +9,6 @@ function Talk(props) {
             socket, 
             currentUser, 
             userConversations, 
-            receiveMessage,
             users
         } = props
     const [ messageText, setMessageText ] = useState('')
@@ -63,12 +62,12 @@ function Talk(props) {
 
     // REFACTOR HOW CONVERSATIONS HAPPEN
 
-    useEffect(() => {
-        subscribeToSocketConnections(socket, receiveMessage)
-        return function cleanup () {
-            unsubscribeToSocketConnections(socket)
-        }
-    }, [socket, receiveMessage])
+    // useEffect(() => {
+    //     subscribeToSocketConnections(socket, receiveMessage)
+    //     return function cleanup () {
+    //         unsubscribeToSocketConnections(socket)
+    //     }
+    // }, [socket, receiveMessage])
 
     useEffect(() => {
         messageListEnd.current.scrollIntoView({ behavior: "smooth" })
@@ -102,16 +101,6 @@ function Talk(props) {
             </div>            
         </div>
     )
-}
-
-function subscribeToSocketConnections(socket, receiveMessage) {
-    socket.on('RECEIVE_MESSAGE', (messageData) => {
-        receiveMessage(messageData)
-    })
-}
-
-function unsubscribeToSocketConnections(socket) {
-    socket.removeListener('RECEIVE_MESSAGE')
 }
 
 export default withRouter(Talk)
