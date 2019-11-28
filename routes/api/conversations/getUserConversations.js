@@ -1,5 +1,6 @@
 const Conversation = require('../../../models/Conversation');
 const User = require('../../../models/User');
+const Message = require('../../../models/Message');
 // const keys = require('../../../config/keys');
 // const bcrypt = require('bcryptjs');
 // const jwt = require('jsonwebtoken');
@@ -14,13 +15,16 @@ module.exports = function (req, res) {
         const conversationsResponse = { conversations: {}, users: {} };
 
         let allConversationUsersIds = []
+        let allConversationIds = []
         
         conversations.forEach(function (conversation) {
             conversationsResponse["conversations"][conversation._id] = {
                 _id: conversation._id,
-                participants: conversation.participants
+                participants: conversation.participants,
+                messages: []
             }
             allConversationUsersIds = allConversationUsersIds.concat(conversation.participants)
+            allConversationIds = allConversationIds.concat([conversation._id])
         });
 
         User.find({ _id: allConversationUsersIds }).then((users) => {
@@ -30,7 +34,17 @@ module.exports = function (req, res) {
                     username: user.username,
                 }
             })
-            res.send(conversationsResponse);
+            Message.find({ conversationId: allConversationIds }).then(messages => {
+                messages.forEach(message => {
+                    conversationsResponse["conversations"][message.conversationId].messages.push({
+                        senderId: message.senderId,
+                        message: message.message,
+                        conversationId: message.conversationId,
+                        timestamp: message.timestamp
+                    })
+                })
+                res.send(conversationsResponse);
+            })
         })
 
     })

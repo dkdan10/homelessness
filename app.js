@@ -76,6 +76,7 @@ io.on('connection', (socket) => {
     })
 
     socket.on('SEND_MESSAGE', function (data) {
+        // SAVE MESSAGE TO DB HERE?
         if (userIdToSocketId[data.recipientUserId] && data.recipientUserId !== data.message.senderId) {
             console.log(data)
             const socketId = userIdToSocketId[data.recipientUserId]
