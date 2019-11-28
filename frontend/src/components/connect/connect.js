@@ -38,7 +38,8 @@ class ConnectComponent extends React.Component {
 
     createSocketConnection() {
         // Put logic here for prod vs dev
-        const socket = io('localhost:5000')
+        const port = process.env.PORT || 'localhost:5000'
+        const socket = io(port)
         socket.on('connect', () => {
             if (this.props.loggedIn) {
                 socket.emit("ASSIGN_USER_TO_SOCKET", {
@@ -64,9 +65,9 @@ class ConnectComponent extends React.Component {
     newChatWithUser(userId) {
         this.props.createConversation({
             participants: [this.props.currentUser.id, userId]
-        }).then(() => {
+        }).then((convo) => {
             // Broadcast conversation either here or on first message
-            this.setState({ currentTab: TALK, currentConversationId: this.props.userConversations[this.props.userIdToConversationId[userId]].conversationId })
+            this.setState({ currentTab: TALK, currentConversationId: convo.conversation._id })
         })
     }
 
@@ -90,6 +91,7 @@ class ConnectComponent extends React.Component {
             case DONATE:
                 return <Donate 
                             setChatWithUser={this.setChatWithUser}
+                            currentUser={this.props.currentUser}
                         />
             case TALK:
                 return <Talk 
@@ -109,7 +111,7 @@ class ConnectComponent extends React.Component {
 
     
     render() {
-        const { currentTab} = this.state
+        const { currentTab } = this.state
         return (
             <div className="connect-component-container">
                 <ConnectTabBar 

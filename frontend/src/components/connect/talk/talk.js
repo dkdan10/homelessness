@@ -41,8 +41,8 @@ function Talk(props) {
     function formConversationLis() {
         return Object.keys(userConversations).map(conversationId => {
             return (
-                <li className={`conversation-list-item ${conversationId === currentConversationId ? "selected" : ""}`} key={`chat-with-${conversationId}`}>
-                    <div className="info" onClick={setChatUserId(userConversations[conversationId].otherUserId)}>
+                <li onClick={setChatUserId(userConversations[conversationId].otherUserId)} className={`conversation-list-item ${conversationId === currentConversationId ? "selected" : ""}`} key={`chat-with-${conversationId}`}>
+                    <div className="info" >
                         Chat With: {users[userConversations[conversationId].otherUserId].username}
                     </div>
                 </li>

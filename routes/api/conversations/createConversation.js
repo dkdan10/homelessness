@@ -15,7 +15,7 @@ module.exports = function (req, res) {
             sendConversation(res, conversation)
         } else {
             const newConversation = new Conversation({
-                participants: req.body.participants,
+                participants: req.body.participants
             })
 
             newConversation.save().then(conversation => {
@@ -37,13 +37,24 @@ function sendConversation(res, conversation) {
                 username: user.username
             }
         })
-        
-        res.json({
-            conversation: {
-                _id: conversation._id,
-                participants: conversation.participants,
-            },
-            users: usersObject
+        Message.find({ conversationId: conversation._id }).then(messages => {
+            const organizedMessages = []
+            messages.forEach(message => {
+                organizedMessages.push({
+                    senderId: message.senderId,
+                    message: message.message,
+                    conversationId: message.conversationId,
+                    timestamp: message.timestamp
+                })
+            })
+            res.json({
+                conversation: {
+                    _id: conversation._id,
+                    participants: conversation.participants,
+                    messages: organizedMessages
+                },
+                users: usersObject
+            })
         })
     })
 }

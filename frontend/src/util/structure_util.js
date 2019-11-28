@@ -2,17 +2,18 @@ export const structureConversationsWithoutCurrentUser = (conversations, currentU
     const structuredConversations = {}
     Object.values(conversations).forEach(conversation => {
         const otherUserId = conversation.participants.filter(userId => userId !== currentUser.id)[0]
+        const messages = conversation.messages ? conversation.messages : []
         if (otherUserId) {
             structuredConversations[conversation._id] = {
                 conversationId: conversation._id,
                 otherUserId: otherUserId,
-                messages: conversation.messages
+                messages: messages
             }
         } else {
             structuredConversations[conversation._id] = {
                 conversationId: conversation._id,
                 otherUserId: currentUser.id,
-                messages: conversation.messages
+                messages: messages
             }
         }
     })
