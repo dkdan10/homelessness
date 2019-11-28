@@ -21,7 +21,7 @@ export const createConversation = conversationData => (dispatch, getState) => (
     APIUtil.createConversation(conversationData).then(res => (
         dispatch(receiveConversation(res.data, getState().session.user))
     ), err => (
-        console.log("dispatch post request errors here: ", err)
+        console.log("dispatch post conversation errors here: ", err)
     ))
 )
 
@@ -29,6 +29,6 @@ export const getAllConversations = () => (dispatch, getState) => (
     APIUtil.getAllConversations().then(res => (
         dispatch(receiveConversations(res.data, getState().session.user))
     ), err => (
-        console.log("dispatch post request errors here: ", err)
+        console.log("dispatch get all conversation errors here: ", err)
     ))
 )

@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import Connect from './connect.js';
 
 import { createConversation, getAllConversations } from '../../actions/conversation_actions'
+import { createMessage, receiveMessage } from '../../actions/message_actions'
 
 const mapStateToProps = state => {
     const userIdToConversationId = {}
@@ -20,7 +21,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => ({
     createConversation: (conversationData) => dispatch(createConversation(conversationData)),
-    getConversations: () => dispatch(getAllConversations())
+    getConversations: () => dispatch(getAllConversations()),
+    createMessage: (messageData) => dispatch(createMessage(messageData)),
+    receiveMessage: (messageData) => dispatch(receiveMessage(messageData))
 })
 
 export default connect(

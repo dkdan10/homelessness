@@ -25,6 +25,6 @@ export const getAllRequests = () => dispatch => (
     APIUtil.getAllRequests().then(res => (
         dispatch(receiveRequests(res.data))
     ), err => (
-        console.log("dispatch post request errors here: ", err)
+        console.log("dispatch get all request errors here: ", err)
     ))
 )

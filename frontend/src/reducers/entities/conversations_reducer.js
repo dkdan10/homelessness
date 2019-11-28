@@ -3,6 +3,10 @@ import {
     RECEIVE_CONVERSATIONS
 } from "../../actions/conversation_actions"
 
+import {
+    RECEIVE_MESSAGE
+} from "../../actions/message_actions"
+
 import { structureConversationsWithoutCurrentUser } from '../../util/structure_util'
 
 export default function (state = {}, action) {
@@ -12,6 +16,9 @@ export default function (state = {}, action) {
             return Object.assign({}, state, structureConversationsWithoutCurrentUser([action.conversation], action.currentUser) )
         case RECEIVE_CONVERSATIONS:
             return Object.assign({}, state, structureConversationsWithoutCurrentUser(action.conversations, action.currentUser) )
+        case RECEIVE_MESSAGE:
+            state[action.message.conversationId].messages = [...state[action.message.conversationId].messages, action.message]
+            return Object.assign({}, state)
         default:
             return state;
     }

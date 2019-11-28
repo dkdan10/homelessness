@@ -4,18 +4,32 @@ import './talk.scss'
 
 // To save text from diffrent chats I could pass down a typed messages object from the connect component. Or create that here. 
 function Talk(props) {
-    const { currentConversationId, setChatUserId, socket, currentUser, userConversations, conversationMessages, addMessageToConversation } = props
+    const { currentConversationId, 
+            setChatUserId, 
+            socket, 
+            currentUser, 
+            userConversations, 
+            receiveMessage
+        } = props
     const [ messageText, setMessageText ] = useState('')
     // const [ messages, setMessages ] = useState([])
 
 
     function handleSendMessage(e) {
         e.preventDefault()
-        socket.emit('SEND_MESSAGE', {
+        const recipientUserId = userConversations[currentConversationId].otherUserId
+        const message = {
             message: messageText,
-            recipientUserId: userConversations[currentConversationId].otherUserId,
             senderId: currentUser.id,
             conversationId: currentConversationId
+        }
+        props.createMessage(message).then(({ message }) => {
+            if (message) {
+                socket.emit('SEND_MESSAGE', {
+                    message,
+                    recipientUserId
+                })
+            }
         })
         setMessageText('')
     }
@@ -36,11 +50,11 @@ function Talk(props) {
     }
 
     function selectedConvoMessages() {
-        const currentMessages = conversationMessages[currentConversationId] ? conversationMessages[currentConversationId] : []
-        return currentMessages.map((message, idx) => {
+        const currentMessages = userConversations[currentConversationId] ? userConversations[currentConversationId].messages : []
+        return currentMessages.map((messageData, idx) => {
             return (
                 <li key={`message-${idx}`}>
-                    Message: {message}
+                    Message: {messageData.message}
                 </li>
             )
         })
@@ -49,7 +63,7 @@ function Talk(props) {
     // REFACTOR HOW CONVERSATIONS HAPPEN
 
     useEffect(() => {
-        subscribeToSocketConnections(socket, addMessageToConversation)
+        subscribeToSocketConnections(socket, receiveMessage)
         return function cleanup () {
             unsubscribeToSocketConnections(socket)
         }
@@ -77,9 +91,9 @@ function Talk(props) {
     )
 }
 
-function subscribeToSocketConnections(socket, addMessageToConversation) {
+function subscribeToSocketConnections(socket, receiveMessage) {
     socket.on('RECEIVE_MESSAGE', (messageData) => {
-        addMessageToConversation(messageData.message, messageData.conversationId)
+        receiveMessage(messageData)
     })
 }
 

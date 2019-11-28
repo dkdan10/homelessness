@@ -22,32 +22,18 @@ class ConnectComponent extends React.Component {
         super(props)
         let currentTab = DONATE
 
-        const conversationMessages = {}
-        Object.keys(this.props.userConversations).forEach(conversationId => conversationMessages[conversationId] = [])
         this.state = {
             currentTab,
             currentConversationId: null,
             socket: this.createSocketConnection(),
-            conversationMessages
         }        
 
         this.setCurrentTab = this.setCurrentTab.bind(this)
         this.setChatWithUser = this.setChatWithUser.bind(this)
-        this.addMessageToConversation = this.addMessageToConversation.bind(this)
     }
 
     componentDidMount() {
         if (this.props.loggedIn) this.props.getConversations()
-    }
-
-    componentDidUpdate(prevProps) {
-        if (Object.keys(this.props.userConversations).length !== Object.keys(prevProps.userConversations).length) {
-            const conversationMessages = {}
-            Object.keys(this.props.userConversations).forEach(conversationId => conversationMessages[conversationId] = [])
-            this.setState({
-                conversationMessages
-            })
-        }
     }
 
     createSocketConnection() {
@@ -80,7 +66,6 @@ class ConnectComponent extends React.Component {
             participants: [this.props.currentUser.id, userId]
         }).then(() => {
             // Broadcast conversation either here or on first message
-            debugger
             this.setState({ currentTab: TALK, currentConversationId: this.props.userConversations[this.props.userIdToConversationId[userId]].conversationId })
         })
     }
@@ -98,12 +83,6 @@ class ConnectComponent extends React.Component {
         }
     }
 
-    addMessageToConversation(message, conversationId) {
-        this.setState({
-            conversationMessages: Object.assign(this.state.conversationMessages, { [conversationId]: this.state.conversationMessages[conversationId].concat([message])}) 
-        })
-    }
-
     loadSelectedComponent() {
         switch(this.state.currentTab) {
             case REQUEST:
@@ -114,13 +93,13 @@ class ConnectComponent extends React.Component {
                         />
             case TALK:
                 return <Talk 
-                            currentConversationId={this.state.currentConversationId} 
-                            setChatUserId={this.setChatWithUser}
                             socket={this.state.socket}
                             currentUser={this.props.currentUser}
+                            currentConversationId={this.state.currentConversationId} 
+                            setChatUserId={this.setChatWithUser}
                             userConversations={this.props.userConversations}
-                            conversationMessages={this.state.conversationMessages}
-                            addMessageToConversation={this.addMessageToConversation}
+                            createMessage={this.props.createMessage}
+                            receiveMessage={this.props.receiveMessage}
                         />
             default:
                 return this.state.currentTab
@@ -132,7 +111,11 @@ class ConnectComponent extends React.Component {
         const { currentTab} = this.state
         return (
             <div className="connect-component-container">
-                <ConnectTabBar currentTab={currentTab} setCurrentTab={this.setCurrentTab} tabBarOptions={Object.values(tabBarOptions)}/>
+                <ConnectTabBar 
+                    currentTab={currentTab} 
+                    setCurrentTab={this.setCurrentTab} 
+                    tabBarOptions={Object.values(tabBarOptions)}
+                />
                 {this.loadSelectedComponent()}
             </div>
         )

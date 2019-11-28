@@ -27,7 +27,7 @@ module.exports = function (req, res) {
             users.forEach(user => {
                 conversationsResponse["users"][user._id] = {
                     _id: user._id,
-                    username: user.username
+                    username: user.username,
                 }
             })
             res.send(conversationsResponse);

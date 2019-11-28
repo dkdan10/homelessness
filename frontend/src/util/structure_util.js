@@ -5,12 +5,14 @@ export const structureConversationsWithoutCurrentUser = (conversations, currentU
         if (otherUserId) {
             structuredConversations[conversation._id] = {
                 conversationId: conversation._id,
-                otherUserId: otherUserId
+                otherUserId: otherUserId,
+                messages: []
             }
         } else {
             structuredConversations[conversation._id] = {
                 conversationId: conversation._id,
-                otherUserId: currentUser.id
+                otherUserId: currentUser.id,
+                messages: []
             }
         }
     })
