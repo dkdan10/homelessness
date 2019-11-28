@@ -48,6 +48,9 @@ class ConnectComponent extends React.Component {
                 })
             }
         })
+        socket.on('RECIEVE_CONVERSATION', conversationData => {
+            this.props.receiveConversation(conversationData, this.props.currentUser)
+        })
         return socket
     }
 
@@ -65,9 +68,15 @@ class ConnectComponent extends React.Component {
     newChatWithUser(userId) {
         this.props.createConversation({
             participants: [this.props.currentUser.id, userId]
-        }).then((convo) => {
+        }).then((convoData) => {
             // Broadcast conversation either here or on first message
-            this.setState({ currentTab: TALK, currentConversationId: convo.conversation._id })
+            if (convoData.conversation) {
+                this.state.socket.emit('CREATE_CONVERSATION', {
+                    convoData,
+                    currentUser: this.props.currentUser
+                })
+                this.setState({ currentTab: TALK, currentConversationId: convoData.conversation._id })
+            }
         })
     }
 

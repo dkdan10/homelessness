@@ -3,7 +3,7 @@ import * as APIUtil from "../util/conversation_api_util"
 export const RECEIVE_CONVERSATION = "RECEIVE_CONVERSATION"
 export const RECEIVE_CONVERSATIONS = "RECEIVE_CONVERSATIONS"
 
-const receiveConversation = (data, user) => ({
+export const receiveConversation = (data, user) => ({
     type: RECEIVE_CONVERSATION,
     conversation: data.conversation,
     conversationUsers: data.users,

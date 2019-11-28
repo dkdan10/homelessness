@@ -86,4 +86,18 @@ io.on('connection', (socket) => {
         //     userIdToSocketId[data.senderId].emit('RECEIVE_MESSAGE', data)
         // }
     })
+
+    socket.on("CREATE_CONVERSATION", function (data) {
+        console.log(data)
+        const createrUserId = data.currentUser.id
+        data.convoData.conversation.participants.forEach(userId => {
+            if (userId !== createrUserId) {
+                const socketId = userIdToSocketId[userId]
+                socketLookup[socketId].emit('RECIEVE_CONVERSATION', {
+                    conversation: data.convoData.conversation,
+                    users: data.convoData.conversationUsers
+                })
+            }
+        })
+    })
 });
