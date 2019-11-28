@@ -76,7 +76,8 @@ io.on('connection', (socket) => {
     })
 
     socket.on('SEND_MESSAGE', function (data) {
-        if (userIdToSocketId[data.recipientUserId]) {
+        if (userIdToSocketId[data.recipientUserId] && data.recipientUserId !== data.message.senderId) {
+            console.log(data)
             const socketId = userIdToSocketId[data.recipientUserId]
             socketLookup[socketId].emit('RECEIVE_MESSAGE', data)
         }
