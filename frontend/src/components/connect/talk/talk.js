@@ -43,7 +43,7 @@ function Talk(props) {
             return (
                 <li className={`conversation-list-item ${conversationId === currentConversationId ? "selected" : ""}`} key={`chat-with-${conversationId}`}>
                     <div className="info" onClick={setChatUserId(userConversations[conversationId].otherUserId)}>
-                        Chat User Id: {userConversations[conversationId].otherUserId}
+                        Chat With: {users[userConversations[conversationId].otherUserId].username}
                     </div>
                 </li>
             )
