@@ -55,12 +55,12 @@ const userIdToSocketId = {}
 const socketIdToUserId = {}
 
 io.on('connection', (socket) => {
-    console.log(socket.id)
+    // console.log(socket.id)
     socketLookup[socket.id] = socket 
     socketIdToUserId[socket.id] = null
     
     socket.on('ASSIGN_USER_TO_SOCKET', function(data) {
-        console.log("connect assign")
+        // console.log("connect assign")
         userIdToSocketId[data.userId] = data.socketId
         socketIdToUserId[data.socketId] = data.userId
         // console.log(data)
@@ -68,7 +68,7 @@ io.on('connection', (socket) => {
     })
 
     socket.on('disconnect', function () {
-        console.log("disconnect")
+        // console.log("disconnect")
         delete userIdToSocketId[socketIdToUserId[socket.id]]
         delete socketIdToUserId[socket.id]
         delete socketLookup[socket.id]
@@ -78,7 +78,7 @@ io.on('connection', (socket) => {
     socket.on('SEND_MESSAGE', function (data) {
         // SAVE MESSAGE TO DB HERE?
         if (userIdToSocketId[data.recipientUserId] && data.recipientUserId !== data.message.senderId) {
-            console.log(data)
+            // console.log(data)
             const socketId = userIdToSocketId[data.recipientUserId]
             socketLookup[socketId].emit('RECEIVE_MESSAGE', data)
         }

@@ -100,6 +100,7 @@ class ConnectComponent extends React.Component {
                             userConversations={this.props.userConversations}
                             createMessage={this.props.createMessage}
                             receiveMessage={this.props.receiveMessage}
+                            users={this.props.users}
                         />
             default:
                 return this.state.currentTab

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { withRouter } from 'react-router-dom'
 import './talk.scss'
 
@@ -9,11 +9,14 @@ function Talk(props) {
             socket, 
             currentUser, 
             userConversations, 
-            receiveMessage
+            receiveMessage,
+            users
         } = props
     const [ messageText, setMessageText ] = useState('')
     // const [ messages, setMessages ] = useState([])
+    const messageListEnd = useRef(null)
 
+    const currentMessages = userConversations[currentConversationId] ? userConversations[currentConversationId].messages : []
 
     function handleSendMessage(e) {
         e.preventDefault()
@@ -34,15 +37,13 @@ function Talk(props) {
         setMessageText('')
     }
 
+
     function formConversationLis() {
         return Object.keys(userConversations).map(conversationId => {
             return (
-                <li key={`chat-with-${conversationId}`}>
-                    <div onClick={setChatUserId(userConversations[conversationId].otherUserId)}>
+                <li className={`conversation-list-item ${conversationId === currentConversationId ? "selected" : ""}`} key={`chat-with-${conversationId}`}>
+                    <div className="info" onClick={setChatUserId(userConversations[conversationId].otherUserId)}>
                         Chat User Id: {userConversations[conversationId].otherUserId}
-                    </div>
-                    <div>
-                        Chat Username: {userConversations[conversationId].username}
                     </div>
                 </li>
             )
@@ -53,8 +54,8 @@ function Talk(props) {
         const currentMessages = userConversations[currentConversationId] ? userConversations[currentConversationId].messages : []
         return currentMessages.map((messageData, idx) => {
             return (
-                <li key={`message-${idx}`}>
-                    Message: {messageData.message}
+                <li className="chat-message-list-item" key={`message-${idx}`}>
+                    {users[messageData.senderId].username}: {messageData.message}
                 </li>
             )
         })
@@ -67,26 +68,38 @@ function Talk(props) {
         return function cleanup () {
             unsubscribeToSocketConnections(socket)
         }
-    }, [socket])
+    }, [socket, receiveMessage])
+
+    useEffect(() => {
+        messageListEnd.current.scrollIntoView({ behavior: "smooth" })
+    }, [currentMessages])
 
     return (
         <div className="talk-container">
-            <span>Chat With: {userConversations[currentConversationId] ? userConversations[currentConversationId].otherUserId : "No Chat"}</span>
-            <div>
-                Chats:
-                <ul>
+            {/* <span>Chat With: {userConversations[currentConversationId] ? userConversations[currentConversationId].otherUserId : "No Chat"}</span> */}
+            <div className="conversations-container">
+                <div className="conversations-header">
+                    <span className="inbox">Conversations</span>
+                </div>
+                <ul className="conversations-list">
                     {formConversationLis()}
                 </ul>
             </div>
-            <div>
-                Messages:
-                <ul>
-                    {selectedConvoMessages()}
-                </ul>
-            </div>
-            
-            <input type="text" onChange={(e) => setMessageText(e.target.value)} value={messageText}></input>
-            <button onClick={handleSendMessage}>Send</button>
+            <div className="chat-container">
+                <span className="chat-header">Chat With: {userConversations[currentConversationId] ? userConversations[currentConversationId].otherUserId : "No Chat"}</span>
+                <div className="chat-message-index">
+                    <ul className="chat-message-list">
+                        {selectedConvoMessages()}
+                        <div ref={messageListEnd}></div>
+                    </ul>
+                    <div className="chat-message-input-container">
+                        <div className="chat-message-inputs">
+                            <textarea className="message-input-field" type="text" onChange={(e) => setMessageText(e.target.value)} value={messageText}></textarea>
+                            <button className="submit-message-btn" onClick={handleSendMessage}>Send</button>
+                        </div>
+                    </div>
+                </div>
+            </div>            
         </div>
     )
 }
