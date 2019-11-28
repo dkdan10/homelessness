@@ -38,8 +38,8 @@ class ConnectComponent extends React.Component {
 
     createSocketConnection() {
         // Put logic here for prod vs dev
-        const port = process.env.PORT || 'localhost:5000'
-        const socket = io(port)
+        // const port = '' || 'localhost:5000'
+        const socket = io()
         socket.on('connect', () => {
             if (this.props.loggedIn) {
                 socket.emit("ASSIGN_USER_TO_SOCKET", {
