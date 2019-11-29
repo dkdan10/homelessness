@@ -14,9 +14,15 @@ class LoginForm extends React.Component {
         };
 
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.renderErrors = this.renderErrors.bind(this);
     }
 
+    componentWillUnmount() {
+        if (Object.keys(this.props.errors).length) {
+            this.props.removeSessionErrors()
+        }
+    }
+
+    // REFACTOR THIS WHEN THERE IS LOCAL FORM VALIDATION FOR ERRORS
     static getDerivedStateFromProps(nextProps) {
         if (nextProps.errors) {
             return { errors: nextProps.errors };

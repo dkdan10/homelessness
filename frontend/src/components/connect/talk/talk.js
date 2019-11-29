@@ -4,13 +4,15 @@ import './talk.scss'
 
 // To save text from diffrent chats I could pass down a typed messages object from the connect component. Or create that here. 
 function Talk(props) {
-    const { currentConversationId, 
-            setChatUserId, 
-            socket, 
-            currentUser, 
-            userConversations, 
-            users
-        } = props
+    const {
+        socket,
+        currentUser,
+        currentConversationId,
+        setChatUserId,
+        userConversations,
+        createMessage,
+        users
+    } = props
     const [ messageText, setMessageText ] = useState('')
     // const [ messages, setMessages ] = useState([])
     const messageListEnd = useRef(null)
@@ -25,7 +27,7 @@ function Talk(props) {
             senderId: currentUser.id,
             conversationId: currentConversationId
         }
-        props.createMessage(message).then(({ message }) => {
+        createMessage(message).then(({ message }) => {
             if (message) {
                 socket.emit('SEND_MESSAGE', {
                     message,

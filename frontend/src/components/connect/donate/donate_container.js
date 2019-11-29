@@ -8,6 +8,7 @@ const mapStateToProps = state => ({
     requests: Object.values(state.entities.requests)
 });
 
+// REFACTOR TO CONNECT CONTAINER
 const mapDispatchToProps = dispatch => ({
     getAllRequests: () => dispatch(getAllRequests())
 })
