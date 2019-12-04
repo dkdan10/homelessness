@@ -40,7 +40,7 @@ class LoginForm extends React.Component {
         e.preventDefault();
 
         let user = {
-            email: this.state.email,
+            email: this.state.email.toLowerCase(),
             password: this.state.password
         };
 
