@@ -18,6 +18,7 @@ const users = require('./routes/api/users');
 const requests = require('./routes/api/requests')
 const conversations = require('./routes/api/conversations')
 const messages = require('./routes/api/messages')
+const data = require('./routes/api/data')
 
 // SETUP PASSPORT FOR AUTH, BODY PARSER, AND ROUTES
 const passport = require('passport')
@@ -32,6 +33,7 @@ app.use("/api/users", users)
 app.use("/api/requests", requests)
 app.use("/api/conversations", conversations)
 app.use("/api/messages", messages)
+app.use("/api/data", data)
 
 // CONNECT TO MONGO DB
 mongoose

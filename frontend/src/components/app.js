@@ -6,6 +6,7 @@ import NavBarContainer from './nav/navbar_container';
 import LoginFormContainer from './session/login_form_container';
 import SignupFormContainer from './session/signup_form_container';
 import ConnectComponent from './connect/connect_container';
+import AboutComponent from './about/about_container';
 
 const App = () => (
     <div>
@@ -14,6 +15,7 @@ const App = () => (
             <AuthRoute exact path="/login" component={LoginFormContainer} />
             <AuthRoute exact path="/signup" component={SignupFormContainer} />
             <Route exact path="/connect" component={ConnectComponent}/>
+            <Route exact path="/about" component={AboutComponent}/>
         </Switch>
     </div>
 );
