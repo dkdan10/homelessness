@@ -17,7 +17,6 @@ setInterval(() => {
 }, dayInMilliseconds)
 
 module.exports =  (req, res) => {
-    console.log(homelessShelterCensusData.length)
     res.json({
         homelessShelterCensusData
     })
