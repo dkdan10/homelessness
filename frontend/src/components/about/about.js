@@ -12,40 +12,17 @@ function About(props) {
 
     const [minDate, setMinDate] = useState(0)
     const [maxDate, setMaxDate] = useState(0)
-    const [lightPicker, setLightPicker] = useState(null)
 
     const scatterRef = useRef(null)
     const datePickerStartRef = useRef(null)
     const datePickerEndRef = useRef(null)
 
-    // if (minDate && maxDate && datePickerStartRef.current && datePickerEndRef.current && !lightPicker) {
-    //     const pickerStart = datePickerStartRef.current
-    //     const pickerEnd = datePickerEndRef.current
-    //     let lastMin = null
-    //     let lastMax = null
-    //     const datePicker = new Lightpick({
-    //         field: pickerStart,
-    //         secondField: pickerEnd,
-    //         singleDate: false,
-    //         selectForward: true,
-    //         repick: true,
-    //         onSelect: (start, end) => {
-    //             console.log("called")
-    //             if (!lastMin || start.unix() !== lastMin.unix()) {
-    //                 lastMin = start
-    //                 setMinDate(start)
-    //             }
-    //             if (!lastMax || end.unix() !== lastMax.unix()) {
-    //                 lastMax = end
-    //                 setMaxDate(end)
-    //             }
-    //         }
-    //     })
-    //     datePicker.setDateRange(new Date(minDate), new Date(maxDate))
-        // setLightPicker(datePicker)
-    // }
+// GET DATA
+    useEffect(() => {
+        getHomelessShelterCensusData()
+    }, [getHomelessShelterCensusData])
 
-    const shouldSetDatePicker = !!datePickerStartRef && !!datePickerEndRef
+// SET DATE PICKER ON FIRST MOUNT / WHEN DATA IS FETCHED
     useEffect(() => {
         const pickerStart = datePickerStartRef.current
         const pickerEnd = datePickerEndRef.current
@@ -58,7 +35,6 @@ function About(props) {
             selectForward: true,
             repick: true,
             onSelect: (start, end) => {
-                console.log(start, end)
                 if (!lastMin || start.unix() !== lastMin.unix()) {
                     lastMin = start
                     setMinDate(start)
@@ -69,13 +45,15 @@ function About(props) {
                 }
             }
         })
-        setLightPicker(datePicker)
-    }, [shouldSetDatePicker])
+        if (homelessShelterCensusData.length) {
+            const minDate = Date.parse(homelessShelterCensusData[homelessShelterCensusData.length - 1].date_of_census)
+            const maxDate = Date.parse(homelessShelterCensusData[0].date_of_census)
+            datePicker.setDateRange(new Date(minDate), new Date(maxDate))
+        }
+        return () => datePicker.destroy()
+    }, [homelessShelterCensusData])
 
-    useEffect(() => {
-        getHomelessShelterCensusData()
-    }, [getHomelessShelterCensusData])
-
+// CREATE SCATTER PLOT WHEN NEW DATA COMES IN OR MIN MAX RANGE CHANGE
     useEffect(() => {
         createScatterPlot()
 
@@ -140,14 +118,6 @@ function About(props) {
                 .style("fill", "#69b3a2")
         }
     }, [minDate, maxDate, homelessShelterCensusData])
-
-    useEffect(() => {
-        if (homelessShelterCensusData.length) {
-            const minDate = Date.parse(homelessShelterCensusData[homelessShelterCensusData.length - 1].date_of_census)
-            const maxDate = Date.parse(homelessShelterCensusData[0].date_of_census)
-            lightPicker.setDateRange(new Date(minDate), new Date(maxDate))
-        }
-    }, [homelessShelterCensusData, lightPicker])
 
     // function structureHomelessShelterCensusData() {
     //     return (
