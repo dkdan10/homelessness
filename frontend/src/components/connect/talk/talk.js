@@ -21,6 +21,9 @@ function Talk(props) {
 
     function handleSendMessage(e) {
         e.preventDefault()
+        if (currentConversationId === null) {
+            return
+        }
         const recipientUserId = userConversations[currentConversationId].otherUserId
         const message = {
             message: messageText,
@@ -95,8 +98,8 @@ function Talk(props) {
                     </ul>
                     <div className="chat-message-input-container">
                         <div className="chat-message-inputs">
-                            <textarea className="message-input-field" type="text" onChange={(e) => setMessageText(e.target.value)} value={messageText}></textarea>
-                            <button className="submit-message-btn" onClick={handleSendMessage}>Send</button>
+                            <textarea className="message-input-field" disabled={!currentConversationId} type="text" onChange={(e) => setMessageText(e.target.value)} value={messageText}></textarea>
+                            <button className="submit-message-btn" disabled={!currentConversationId} onClick={handleSendMessage}>Send</button>
                         </div>
                     </div>
                 </div>
