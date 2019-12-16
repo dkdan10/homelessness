@@ -25,7 +25,7 @@ function Donate(props) {
 function createRequestLis(requests, setChatWithUser, currentUser) {
 
     function createLiButton(request) {
-        if (currentUser.id === request.userId) {
+        if (currentUser && currentUser.id === request.userId) {
             return <button disabled onClick={(e) => e.preventDefault()} className="convo-btn">Your Own Request</button>
         } else {
             return <button onClick={setChatWithUser(request.userId)} className="convo-btn">Start a Convo</button>
